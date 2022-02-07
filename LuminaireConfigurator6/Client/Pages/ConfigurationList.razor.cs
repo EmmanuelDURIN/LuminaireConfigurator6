@@ -5,8 +5,8 @@ namespace LuminaireConfigurator6.Client.Pages
 {
   public partial class ConfigurationList
   {
-    private List<LuminaireConfiguration> luminaireConfigurations = new List<LuminaireConfiguration>();
-    public List<LuminaireConfiguration> LuminaireConfigurations
+    private List<LuminaireConfiguration>? luminaireConfigurations = null;
+    public List<LuminaireConfiguration>? LuminaireConfigurations
     {
       get => luminaireConfigurations;
       set => luminaireConfigurations = value;
