@@ -4,10 +4,10 @@ namespace LuminaireConfigurator6.Client.Services
 {
   public class LuminaireConfigurationService
   {
-    public Task<List<LuminaireConfiguration>> GetLuminaireConfigurations()
+    public async Task<List<LuminaireConfiguration>> GetLuminaireConfigurations()
     {
-      return Task.FromResult(
-            new List<LuminaireConfiguration>()
+      await Task.Delay(3000);
+      return new List<LuminaireConfiguration>()
             {
               new LuminaireConfiguration
               {
@@ -33,8 +33,7 @@ namespace LuminaireConfigurator6.Client.Services
                 Optic = "OM12",
                 Name="Luminaires Puteaux"
               },
-            }
-        );
+            };
     }
   }
 }
