@@ -1,11 +1,14 @@
 ﻿using LuminaireConfigurator6.Client.Services;
 using LuminaireConfigurator6.Shared.Model;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace LuminaireConfigurator6.Client.Pages
 {
   public partial class ConfigurationCreation
   {
+    [Inject]
+    public ILuminaireConfigurationService? LuminaireConfigurationService { get; set; }
     public EditContext EditContext { get; set; }
     private ValidationMessageStore messageStore;
     public bool IsModified { get => EditContext.IsModified(); }
@@ -30,6 +33,16 @@ namespace LuminaireConfigurator6.Client.Pages
     public void Create()
     {
       Console.WriteLine("configuration created");
+      if (LuminaireConfigurationService != null)
+        LuminaireConfigurationService.PostLuminaireConfiguration(new LuminaireConfiguration
+        {
+          CreationTime = DateTime.Now,
+          LampColor=Configuration.LampColor.Temperature,
+          Optic=Configuration.Optic.Name,
+          LampFlux=Configuration.LampFlux,
+          Name=Configuration.Name,
+          Price=Configuration.Price,
+        });
     }
     private void EditContextFieldChanged(object? sender, FieldChangedEventArgs e)
     {

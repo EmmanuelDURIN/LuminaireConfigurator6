@@ -20,5 +20,10 @@ namespace LuminaireConfigurator6.Client.Services
       var lumConfs = await httpClient.GetFromJsonAsync<List<LuminaireConfiguration>>("luminaireconfiguration");
       return lumConfs??new List<LuminaireConfiguration>();
     }
+
+    public async Task PostLuminaireConfiguration(LuminaireConfiguration luminaireConfiguration)
+    {
+      await httpClient.PostAsJsonAsync("luminaireconfiguration", luminaireConfiguration);
+    }
   }
 }

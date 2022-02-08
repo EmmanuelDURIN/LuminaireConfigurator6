@@ -57,5 +57,16 @@ namespace LuminaireConfigurator6.Server.Controllers
         return NotFound("No Luminaire with id=" + id);
       return Ok(lumConf);
     }
+    [HttpPost]
+
+    public ActionResult PostAsync(LuminaireConfiguration lumConf)
+    {
+      if (!ModelState.IsValid)
+        return ValidationProblem(ModelState);
+      int maxId = luminaireConfigurations.Max(l => l.Id);
+      lumConf.Id = maxId;
+      luminaireConfigurations.Add(lumConf);
+      return CreatedAtAction(nameof(GetById), routeValues: new { Id = maxId }, lumConf);
+    }
   }
 }
