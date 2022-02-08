@@ -2,7 +2,7 @@
 
 namespace LuminaireConfigurator6.Client.Services
 {
-  public class LuminaireConfigurationService
+  public class LuminaireConfigurationService : ILuminaireConfigurationService
   {
     private List<LuminaireConfiguration> luminaireConfigurations = new List<LuminaireConfiguration>()
             {

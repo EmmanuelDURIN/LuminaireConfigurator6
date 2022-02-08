@@ -7,6 +7,8 @@ namespace LuminaireConfigurator6.Client.Pages
   public partial class ConfigurationDetails
   {
     [Inject]
+    public ILuminaireConfigurationService? LuminaireConfigurationService { get; set; }
+    [Inject]
     public NavigationManager? NavigationManager { get; set; }
     private int id;
     [Parameter]
@@ -30,8 +32,8 @@ namespace LuminaireConfigurator6.Client.Pages
     }
     protected override Task OnInitializedAsync()
     {
-      LuminaireConfigurationService luminaireConfigurationService = new LuminaireConfigurationService();
-      Configuration = luminaireConfigurationService.GetLuminaireConfigurationById(Id);
+      if (LuminaireConfigurationService != null)
+        Configuration = LuminaireConfigurationService.GetLuminaireConfigurationById(Id);
       if (Configuration == null && NavigationManager != null)
         NavigationManager.NavigateTo("NotFound");
       return Task.FromResult(0);
