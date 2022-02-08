@@ -1,0 +1,42 @@
+﻿@page "/configurationcreation"
+
+<h1>New configuration</h1>
+<EditForm OnValidSubmit="Create" Model="@Configuration">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group row mb-1">
+        <label class="col-sm-3 col-form-label" for="Name">Configuration name</label>
+        <div class="col-sm-9">
+            <InputText class="form-control"  @bind-Value="@Configuration.Name" />
+            <ValidationMessage For="@(()=> Configuration.Name)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-1">
+        <label class="col-sm-3 col-form-label" for="Optic">Optic</label>
+        <div class="col-sm-9">
+            <InputText class="form-control"  @bind-Value="@Configuration.Optic" />
+            <ValidationMessage For="@(()=> Configuration.Optic)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-1">
+        <label class="col-sm-3 col-form-label" for="LampColor">Lamp Color</label>
+        <div class="col-sm-9">
+            <InputNumber class="form-control"  @bind-Value="@Configuration.LampColor" />
+            <ValidationMessage For="@(()=> Configuration.LampColor)" />
+        </div>
+    </div>
+
+    <div class="form-group row mb-1">
+        <label class="col-sm-3 col-form-label" for="LampFlux">Lamp Flux</label>
+        <div class="col-sm-9">
+            <InputNumber class="form-control"  @bind-Value="@Configuration.LampFlux" />
+            <ValidationMessage For="@(()=> Configuration.LampFlux)" />
+        </div>
+    </div>
+    <div class="form-group mb-0">
+        <button type="submit" id="buttonCreate" class="btn btn-primary">Create</button>
+    </div>
+</EditForm>
