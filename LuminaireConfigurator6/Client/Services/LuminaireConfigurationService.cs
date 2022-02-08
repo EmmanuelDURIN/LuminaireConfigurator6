@@ -34,9 +34,9 @@ namespace LuminaireConfigurator6.Client.Services
                 Name="Luminaires Puteaux"
               },
             };
-    public LuminaireConfiguration GetLuminaireConfigurationById(int id)
+    public LuminaireConfiguration? GetLuminaireConfigurationById(int id)
     {
-      return luminaireConfigurations.First(lc => lc.Id == id);
+      return luminaireConfigurations.FirstOrDefault(lc => lc.Id == id);
     }
     public async Task<List<LuminaireConfiguration>> GetLuminaireConfigurations()
     {
