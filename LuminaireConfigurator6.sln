@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuminaireConfigurator6.Server", "LuminaireConfigurator6\Server\LuminaireConfigurator6.Server.csproj", "{FA331E1F-50D0-44E9-8763-459E3B875C91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuminaireConfigurator6.Server", "LuminaireConfigurator6\Server\LuminaireConfigurator6.Server.csproj", "{FA331E1F-50D0-44E9-8763-459E3B875C91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuminaireConfigurator6.Client", "LuminaireConfigurator6\Client\LuminaireConfigurator6.Client.csproj", "{566C2EA3-8374-43B8-8294-8826A07B9842}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuminaireConfigurator6.Client", "LuminaireConfigurator6\Client\LuminaireConfigurator6.Client.csproj", "{566C2EA3-8374-43B8-8294-8826A07B9842}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuminaireConfigurator6.Shared", "LuminaireConfigurator6\Shared\LuminaireConfigurator6.Shared.csproj", "{42476127-5CC7-4DB2-BCFF-1E82412CEA8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuminaireConfigurator6.Shared", "LuminaireConfigurator6\Shared\LuminaireConfigurator6.Shared.csproj", "{42476127-5CC7-4DB2-BCFF-1E82412CEA8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

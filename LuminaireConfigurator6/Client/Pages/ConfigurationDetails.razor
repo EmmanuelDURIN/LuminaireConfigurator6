@@ -1,0 +1,41 @@
+﻿@page "/configurationdetails/{id:int}"
+@using LuminaireConfigurator6.Shared
+
+@if (Configuration != null)
+{
+    <h1>Details of configuration @Configuration.Name</h1>
+
+    <dl class="dl-horizontal">
+        <dt>
+            Configuration name:
+        </dt>
+        <dd>
+            @Configuration.Name
+        </dd>
+        <dt>
+            Creation Date:
+        </dt>
+        <dd>
+            @Configuration.CreationTime.ToShortDateString()
+        </dd>
+        <dt>
+            Lamp Color :
+        </dt>
+        <dd>
+            @Configuration.LampColor °K
+        </dd>
+        <dt>
+            Optic:
+        </dt>
+        <dd>
+            @Configuration.Optic
+        </dd>
+        <dt>
+            Lamp Flux
+        </dt>
+        <dd>
+            @Configuration.LampFlux lm
+        </dd>
+    </dl>
+}
+
