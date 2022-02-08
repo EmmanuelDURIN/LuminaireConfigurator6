@@ -1,4 +1,5 @@
-﻿using LuminaireConfigurator6.Client.ViewModel;
+﻿using LuminaireConfigurator6.Client.Services;
+using LuminaireConfigurator6.Shared.Model;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace LuminaireConfigurator6.Client.Pages
@@ -8,15 +9,23 @@ namespace LuminaireConfigurator6.Client.Pages
     public EditContext EditContext { get; set; }
     private ValidationMessageStore messageStore;
     public bool IsModified { get => EditContext.IsModified(); }
-    public LuminaireConfiguration Configuration { get; set; } = new LuminaireConfiguration();
-    public int[] LampColors { get; set; } = new int[] { 2200, 2700, 3000, 4000, 5700 };
-    public string[] Optics { get; set; } = new string[] { "ON10", "ON11", "OL10", "OL11", "OM10", "OM11" };
+    public ViewModel.LuminaireConfiguration Configuration { get; set; } = new ();
+    public List<LampColor> LampColors { get; set; } = new ();
+    public List<Optic> Optics { get; set; } = new ();
     public ConfigurationCreation()
     {
       EditContext = new(Configuration);
       messageStore = new(EditContext);
       EditContext.OnValidationRequested += HandleValidationRequested;
       EditContext.OnFieldChanged += EditContextFieldChanged;
+    }
+    protected async override Task OnInitializedAsync()
+    {
+      var opticService = new OpticService();
+      Optics = await opticService.GetOptics();
+      var lampColorService = new LampColorService();
+      LampColors = await lampColorService.GetLampColors();
+      await base.OnInitializedAsync();
     }
     public void Create()
     {
@@ -34,6 +43,5 @@ namespace LuminaireConfigurator6.Client.Pages
       //  messageStore?.Add(() => Configuration.Options, "Select at least one.");
       //}
     }
-
   }
 }

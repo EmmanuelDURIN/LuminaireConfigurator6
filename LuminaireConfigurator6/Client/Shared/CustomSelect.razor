@@ -1,0 +1,40 @@
+﻿@typeparam TItem
+@typeparam TValue
+@typeparam TDisplay
+
+<select class="form-control" @onchange="OnSelectedChanged">
+    @if (ChildContent != null)
+    {
+        @ChildContent
+    }
+    @if (ValueSelector != null && DisplaySelector != null)
+    {
+        foreach (var item in Items)
+        {
+            bool isSelected = item.Equals(Selected);
+            <option value="@ValueSelector(item)" selected="@isSelected">@DisplaySelector(item)</option>
+        }
+    }
+</select>
+
+@code {
+    [Parameter]
+    public TItem? Selected { get; set; }
+    [Parameter]
+    public IEnumerable<TItem> Items { get; set; } = Enumerable.Empty<TItem>();
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+    [Parameter]
+    public Func<TItem, TValue>? ValueSelector { get; set; }
+    [Parameter]
+    public Func<TItem, TDisplay>? DisplaySelector { get; set; }
+
+    private Task OnSelectedChanged(ChangeEventArgs e)
+    {
+        Selected = Items.FirstOrDefault( i => ValueSelector !=null && ValueSelector(i)?.ToString()?.Equals( e.Value?.ToString()) == true);
+        return SelectedChanged.InvokeAsync(Selected);
+    }
+    [Parameter]
+    public EventCallback<TItem> SelectedChanged { get; set; }
+}
+

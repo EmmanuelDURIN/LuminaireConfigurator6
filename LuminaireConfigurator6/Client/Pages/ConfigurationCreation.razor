@@ -1,5 +1,4 @@
 ﻿@page "/configurationcreation"
-
 <h1>New Configuration @(IsModified?"*":"")</h1>
 <EditForm OnValidSubmit="Create" EditContext="@EditContext">
     <DataAnnotationsValidator />
@@ -16,12 +15,12 @@
     <div class="form-group row mb-1">
         <label class="col-sm-3 col-form-label" for="Optic">Optic</label>
         <div class="col-sm-9">
-            <InputSelect class="form-control"  @bind-Value="@Configuration.Optic"  >
-                @foreach (var optic in this.Optics)
-                {
-                    <option value="@optic">@optic</option>
-                }
-            </InputSelect>
+            <CustomSelect Items="@Optics"
+                          DisplaySelector="o=>o.Name.ToUpper()"
+                          ValueSelector="o=>o.Id"
+                          @bind-Selected="@Configuration.Optic">
+                <option>Please select one</option>
+            </CustomSelect>
             <ValidationMessage For="@(()=> Configuration.Optic)" />
         </div>
     </div>
@@ -29,12 +28,12 @@
     <div class="form-group row mb-1">
         <label class="col-sm-3 col-form-label" for="LampColor">Lamp Color</label>
         <div class="col-sm-9">
-           <InputSelect class="form-control"  @bind-Value="@Configuration.LampColor"  >
-                @foreach (var lampColor in this.LampColors)
-                {
-                    <option value="@lampColor">@lampColor</option>
-                }
-            </InputSelect>
+            <CustomSelect Items="@LampColors"
+                          DisplaySelector="l=>l.Temperature"
+                          ValueSelector="l=>l.Id" 
+                          @bind-Selected="@Configuration.LampColor">
+                <option>Please select one</option>
+            </CustomSelect>
             <ValidationMessage For="@(()=> Configuration.LampColor)" />
         </div>
     </div>
