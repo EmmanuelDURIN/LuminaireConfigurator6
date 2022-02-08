@@ -30,13 +30,12 @@ namespace LuminaireConfigurator6.Client.Pages
     {
       return base.OnParametersSetAsync();
     }
-    protected override Task OnInitializedAsync()
+    protected async override Task OnInitializedAsync()
     {
       if (LuminaireConfigurationService != null)
-        Configuration = LuminaireConfigurationService.GetLuminaireConfigurationById(Id);
+        Configuration = await LuminaireConfigurationService.GetLuminaireConfigurationById(Id);
       if (Configuration == null && NavigationManager != null)
         NavigationManager.NavigateTo("NotFound");
-      return Task.FromResult(0);
     }
   }
 }

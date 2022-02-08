@@ -4,7 +4,7 @@ namespace LuminaireConfigurator6.Client.Services
 {
   public interface ILuminaireConfigurationService
   {
-    LuminaireConfiguration? GetLuminaireConfigurationById(int id);
+    Task<LuminaireConfiguration?> GetLuminaireConfigurationById(int id);
     Task<List<LuminaireConfiguration>> GetLuminaireConfigurations();
   }
 }
