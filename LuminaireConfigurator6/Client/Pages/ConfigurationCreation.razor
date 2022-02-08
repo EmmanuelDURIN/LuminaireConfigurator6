@@ -1,7 +1,7 @@
 ﻿@page "/configurationcreation"
 
-<h1>New configuration</h1>
-<EditForm OnValidSubmit="Create" Model="@Configuration">
+<h1>New Configuration @(IsModified?"*":"")</h1>
+<EditForm OnValidSubmit="Create" EditContext="@EditContext">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
