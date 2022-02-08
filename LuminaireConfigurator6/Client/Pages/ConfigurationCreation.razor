@@ -16,7 +16,12 @@
     <div class="form-group row mb-1">
         <label class="col-sm-3 col-form-label" for="Optic">Optic</label>
         <div class="col-sm-9">
-            <InputText class="form-control"  @bind-Value="@Configuration.Optic" />
+            <InputSelect class="form-control"  @bind-Value="@Configuration.Optic"  >
+                @foreach (var optic in this.Optics)
+                {
+                    <option value="@optic">@optic</option>
+                }
+            </InputSelect>
             <ValidationMessage For="@(()=> Configuration.Optic)" />
         </div>
     </div>
@@ -24,7 +29,12 @@
     <div class="form-group row mb-1">
         <label class="col-sm-3 col-form-label" for="LampColor">Lamp Color</label>
         <div class="col-sm-9">
-            <InputNumber class="form-control"  @bind-Value="@Configuration.LampColor" />
+           <InputSelect class="form-control"  @bind-Value="@Configuration.LampColor"  >
+                @foreach (var lampColor in this.LampColors)
+                {
+                    <option value="@lampColor">@lampColor</option>
+                }
+            </InputSelect>
             <ValidationMessage For="@(()=> Configuration.LampColor)" />
         </div>
     </div>
