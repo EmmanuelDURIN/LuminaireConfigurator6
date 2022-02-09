@@ -3,33 +3,8 @@
 
 <p>List of configurations</p>
 
-@if (luminaireConfigurations == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Configuration Name</th>
-                <th>Creation Date</th>
-                <th>Lamp Color</th>
-                <th>Optic</th>
-                <th>LampFlux (lm)</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var configuration in luminaireConfigurations)
-            {
-                <tr>
-                    <td><a href="/configurationdetails/@configuration.Id">@configuration.Name</a></td>
-                    <td>@configuration.CreationTime.ToShortDateString()</td>
-                    <td>@configuration.LampColor (°K)</td>
-                    <td>@configuration.Optic</td>
-                    <td>@configuration.LampFlux</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<CustomSelect Size="20" 
+               Items="@luminaireConfigurations" 
+               @bind-Selected="SelectedConfiguration"
+               ValueSelector="@(l=> l?.Id??0)" DisplaySelector="@(l=> l==null? "" : $"{l.Name}, {l.Optic}, {l.LampColor}°K  ")">
+</CustomSelect>

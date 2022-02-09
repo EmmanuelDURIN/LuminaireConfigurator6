@@ -2,7 +2,7 @@
 @typeparam TValue
 @typeparam TDisplay
 
-<select class="form-control" @bind="@SelectedValue">
+<select class="form-control" @bind="@SelectedValue" size="@Size" >
     @if (ChildContent != null)
     {
         @ChildContent
@@ -18,6 +18,8 @@
 </select>
 
 @code {
+    [Parameter]
+    public int Size { get; set; } = 1;
     [Parameter]
     public TItem? Selected { get; set; }
     [Parameter]
