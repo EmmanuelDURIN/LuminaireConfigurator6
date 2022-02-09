@@ -2,9 +2,9 @@
 using LuminaireConfigurator6.Shared.Model;
 using Microsoft.AspNetCore.Components;
 
-namespace LuminaireConfigurator6.Client.Pages
+namespace LuminaireConfigurator6.Client.Components
 {
-  public partial class ConfigurationList
+  public partial class ConfigurationList : ComponentBase
   {
     [Inject]
     public ILuminaireConfigurationService? LuminaireConfigurationService { get; set; }
