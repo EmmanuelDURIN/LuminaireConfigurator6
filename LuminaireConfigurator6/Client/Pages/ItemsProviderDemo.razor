@@ -24,13 +24,21 @@ else
         </thead>
         <tbody>
             <Virtualize Context="configuration" ItemsProvider="@LoadLuminaireConfigurations">
-                <tr>
-                    <td><a href="configurationdetails/@configuration.Id">@configuration.Name</a></td>
-                    <td>@configuration.CreationTime.ToShortDateString()</td>
-                    <td>@configuration.LampColor</td>
-                    <td>@configuration.Optic</td>
-                    <td>@configuration.LampFlux</td>
-                </tr>
+                <ItemContent>
+                    <tr>
+                        <td><a href="configurationdetails/@configuration.Id">@configuration.Name</a></td>
+                        <td>@configuration.CreationTime.ToShortDateString()</td>
+                        <td>@configuration.LampColor</td>
+                        <td>@configuration.Optic</td>
+                        <td>@configuration.LampFlux</td>
+                    </tr>
+                </ItemContent>
+                <Placeholder>
+                    <div>
+                        Loading&hellip;
+                    </div>
+                </Placeholder>
+
             </Virtualize>
         </tbody>
     </table>

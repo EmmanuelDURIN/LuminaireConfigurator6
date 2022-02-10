@@ -40,14 +40,13 @@ namespace LuminaireConfigurator6.Client.Pages
       if (LuminaireConfigurationService != null)
       {
         (LuminaireConfiguration[] luminaireConfigurations, int totalConfigurations) =
-          await LuminaireConfigurationService.GetRange(request.StartIndex,
+          await LuminaireConfigurationService.GetRangeWithDelay(request.StartIndex,
                                          request.Count,
                                          request.CancellationToken);
         return new ItemsProviderResult<LuminaireConfiguration>(luminaireConfigurations, totalConfigurations);
       }
       else
         return new ItemsProviderResult<LuminaireConfiguration>(new LuminaireConfiguration[0], 0);
-
     }
   }
 }
