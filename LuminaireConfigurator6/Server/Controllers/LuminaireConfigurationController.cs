@@ -58,7 +58,6 @@ namespace LuminaireConfigurator6.Server.Controllers
       return Ok(lumConf);
     }
     [HttpPost]
-
     public ActionResult PostAsync(LuminaireConfiguration lumConf)
     {
       if (!ModelState.IsValid)
@@ -67,6 +66,26 @@ namespace LuminaireConfigurator6.Server.Controllers
       lumConf.Id = maxId;
       luminaireConfigurations.Add(lumConf);
       return CreatedAtAction(nameof(GetById), routeValues: new { Id = maxId }, lumConf);
+    }
+    const int totalLuminaires = 500_000;
+    [HttpGet("count")]
+    public int GetCount()
+    {
+      return totalLuminaires;
+    }
+    [HttpGet("range")]
+    public IEnumerable<LuminaireConfiguration> GetRange(int startIndex, int numConfigurations)
+    {
+      return Enumerable.Range(startIndex, numConfigurations).Select(i => new LuminaireConfiguration
+      {
+        Id = i,
+        Name = "Luminaire" + i,
+        CreationTime = DateTime.Now,
+        LampColor = 3000 + (i % 2000),
+        Optic = "OM" + (i % 10),
+        LampFlux = 1000,
+      })
+      .ToArray();
     }
   }
 }

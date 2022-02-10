@@ -1,0 +1,37 @@
+﻿@page "/itemsproviderdemo"
+
+@using LuminaireConfigurator6.Shared
+
+<h1>Configuration List</h1>
+
+<p>List of configurations</p>
+
+@if (luminaireConfigurations == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Configuration Name</th>
+                <th>Creation Date</th>
+                <th>Lamp Color (°K)</th>
+                <th>Optic</th>
+                <th>LampFlux (lm)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <Virtualize Context="configuration" ItemsProvider="@LoadLuminaireConfigurations">
+                <tr>
+                    <td><a href="configurationdetails/@configuration.Id">@configuration.Name</a></td>
+                    <td>@configuration.CreationTime.ToShortDateString()</td>
+                    <td>@configuration.LampColor</td>
+                    <td>@configuration.Optic</td>
+                    <td>@configuration.LampFlux</td>
+                </tr>
+            </Virtualize>
+        </tbody>
+    </table>
+}
