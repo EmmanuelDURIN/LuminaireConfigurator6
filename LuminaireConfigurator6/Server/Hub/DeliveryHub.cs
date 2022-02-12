@@ -13,12 +13,13 @@ namespace LuminaireConfigurator6.Server.Hub
     }
     public void ConfigurationDelivered(LuminaireConfiguration configuration)
     {
-      LuminaireConfigurationController.LuminaireConfigurations.Remove(configuration);
-
       Console.WriteLine("Call made on server");
-      // Add code to call OnConfigurationDelivered on client side
-      // through SignalR, passing the LuminaireConfiguration
+      if (LuminaireConfigurationController.LuminaireConfigurations.Remove(configuration))
+      {
+        // Add code to call OnConfigurationDelivered on client side
+        // through SignalR, passing the LuminaireConfiguration
+        Clients.All.OnConfigurationDelivered(configuration);
+      }
     }
-
   }
 }

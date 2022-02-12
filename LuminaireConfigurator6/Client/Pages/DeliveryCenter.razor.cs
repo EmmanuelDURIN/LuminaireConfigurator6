@@ -1,11 +1,16 @@
-﻿using LuminaireConfigurator6.Shared.Model;
+﻿using LuminaireConfigurator6.Shared.Delivery;
+using LuminaireConfigurator6.Shared.Model;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace LuminaireConfigurator6.Client.Pages
 {
   public partial class DeliveryCenter
   {
-    private LuminaireConfiguration[]? luminaireConfigurations;
-    public LuminaireConfiguration[]? LuminaireConfigurations
+    [Inject]
+    public NavigationManager? NavigationManager { get; set; }
+    private List<LuminaireConfiguration> luminaireConfigurations = new List<LuminaireConfiguration>();
+    public List<LuminaireConfiguration> LuminaireConfigurations
     {
       get => luminaireConfigurations;
       set => luminaireConfigurations = value;
@@ -16,28 +21,35 @@ namespace LuminaireConfigurator6.Client.Pages
       get { return selectedConfiguration; }
       set { selectedConfiguration = value; }
     }
-
-    private void Deliver()
+    private HubConnection? hubConnection = null;
+    private async Task ConnectToHub()
     {
-
+      if (NavigationManager == null)
+        throw new NullReferenceException(nameof(NavigationManager));
+      hubConnection = new HubConnectionBuilder()
+          .WithUrl(NavigationManager.ToAbsoluteUri("/deliveryhub"))
+          .Build();
+      hubConnection.On<LuminaireConfiguration>(nameof(IDeliveryCenterNotification.OnConfigurationDelivered),
+        (lumConf) =>
+        {
+          Console.WriteLine("Client got delivery removed");
+          LuminaireConfigurations.Remove(lumConf);
+          StateHasChanged();
+        });
+      await hubConnection.StartAsync();
+      luminaireConfigurations = await hubConnection.InvokeAsync<List<LuminaireConfiguration>>("GetDeliveries");
     }
-    //protected override Task OnInitializedAsync()
-    //{
-    //  Console.WriteLine("Before Enumerable.Range");
-    //  LuminaireConfigurations = Enumerable.Range(1, 500_000)
-    //                                      .Select(
-    //                                        i => new LuminaireConfiguration
-    //                                        {
-    //                                          Id = i,
-    //                                          Name = "Luminaire" + i,
-    //                                          CreationTime = DateTime.Now,
-    //                                          LampColor = 3000 + (i % 2000),
-    //                                          Optic = "OM" + (i % 10),
-    //                                          LampFlux = 1000,
-    //                                        })
-    //                                      .ToArray();
-    //  Console.WriteLine("After Enumerable.Range");
-    //  return Task.FromResult(0);
-    //}
+    private async Task Deliver()
+    {
+      if (SelectedConfiguration != null && hubConnection != null)
+      {
+        await hubConnection.InvokeAsync<List<LuminaireConfiguration>>("ConfigurationDelivered", SelectedConfiguration);
+        SelectedConfiguration = null;
+      }
+    }
+    protected async override Task OnInitializedAsync()
+    {
+      await ConnectToHub();
+    }
   }
 }

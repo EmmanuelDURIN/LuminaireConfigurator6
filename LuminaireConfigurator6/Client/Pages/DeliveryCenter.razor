@@ -8,7 +8,7 @@
     <CustomSelect Size="20"
                   Items="@LuminaireConfigurations"
                   @bind-Selected="SelectedConfiguration"
-                  ValueSelector="@(l=> l.Id)"
-                  DisplaySelector="@(l=>$"{l.Name} {l.Optic} {l.LampFlux} lm")">
+                  ValueSelector="@(l=> l?.Id)"
+                  DisplaySelector="@(l=>$"{l?.Name} {l?.Optic} {l?.LampFlux} lm")">
     </CustomSelect>
 </div>
