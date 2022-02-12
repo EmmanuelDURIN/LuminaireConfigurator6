@@ -1,0 +1,14 @@
+﻿@page "/deliverycenter"
+
+<h2>Delivery Center</h2>
+<div>
+    <button @onclick="Deliver">Delivered !</button>
+</div>
+<div>
+    <CustomSelect Size="20"
+                  Items="@LuminaireConfigurations"
+                  @bind-Selected="SelectedConfiguration"
+                  ValueSelector="@(l=> l.Id)"
+                  DisplaySelector="@(l=>$"{l.Name} {l.Optic} {l.LampFlux} lm")">
+    </CustomSelect>
+</div>

@@ -7,7 +7,7 @@ namespace LuminaireConfigurator6.Server.Controllers
   [Route("[controller]")]
   public class LuminaireConfigurationController : ControllerBase
   {
-    private static List<LuminaireConfiguration> luminaireConfigurations = new List<LuminaireConfiguration>()
+    public static List<LuminaireConfiguration> LuminaireConfigurations { get; } = new List<LuminaireConfiguration>()
             {
               new LuminaireConfiguration
               {
@@ -46,12 +46,12 @@ namespace LuminaireConfigurator6.Server.Controllers
     [HttpGet]
     public List<LuminaireConfiguration> Get()
     {
-      return luminaireConfigurations;
+      return LuminaireConfigurations;
     }
     [HttpGet("{id}")]
     public ActionResult GetById(int id)
     {
-      LuminaireConfiguration? lumConf = luminaireConfigurations
+      LuminaireConfiguration? lumConf = LuminaireConfigurations
                                          .FirstOrDefault(l => l.Id == id);
       if (lumConf == null)
         return NotFound("No Luminaire with id=" + id);
@@ -62,9 +62,9 @@ namespace LuminaireConfigurator6.Server.Controllers
     {
       if (!ModelState.IsValid)
         return ValidationProblem(ModelState);
-      int maxId = luminaireConfigurations.Max(l => l.Id);
+      int maxId = LuminaireConfigurations.Max(l => l.Id);
       lumConf.Id = maxId;
-      luminaireConfigurations.Add(lumConf);
+      LuminaireConfigurations.Add(lumConf);
       return CreatedAtAction(nameof(GetById), routeValues: new { Id = maxId }, lumConf);
     }
     const int totalLuminaires = 500_000;

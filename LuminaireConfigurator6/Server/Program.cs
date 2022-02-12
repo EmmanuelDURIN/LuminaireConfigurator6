@@ -1,14 +1,22 @@
+using LuminaireConfigurator6.Server.Hub;
 using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddSignalR();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddResponseCompression(opts =>
+{
+  opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+      new[] { "application/octet-stream" });
+});
 
 var app = builder.Build();
 
+app.UseResponseCompression();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -31,6 +39,7 @@ app.UseRouting();
 
 app.MapRazorPages();
 app.MapControllers();
+app.MapHub<DeliveryHub>("/deliveryhub");
 app.MapFallbackToFile("index.html");
 
 app.Run();
