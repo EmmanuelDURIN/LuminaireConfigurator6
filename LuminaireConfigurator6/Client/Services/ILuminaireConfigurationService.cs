@@ -6,6 +6,6 @@ namespace LuminaireConfigurator6.Client.Services
   {
     Task<LuminaireConfiguration?> GetLuminaireConfigurationById(int id);
     Task<List<LuminaireConfiguration>> GetLuminaireConfigurations();
-    Task PostLuminaireConfiguration(LuminaireConfiguration luminaireConfiguration);
+    Task<LuminaireConfiguration?> PostLuminaireConfiguration(LuminaireConfiguration luminaireConfiguration);
   }
 }
