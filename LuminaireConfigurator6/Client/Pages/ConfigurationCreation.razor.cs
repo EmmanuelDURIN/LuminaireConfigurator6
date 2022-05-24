@@ -8,6 +8,8 @@ namespace LuminaireConfigurator6.Client.Pages
   public partial class ConfigurationCreation
   {
     [Inject]
+    public NavigationManager NavigationManager { get; set; } = null!;
+    [Inject]
     public ILuminaireConfigurationService? LuminaireConfigurationService { get; set; }
     public EditContext EditContext { get; set; }
     private ValidationMessageStore messageStore;
@@ -30,11 +32,12 @@ namespace LuminaireConfigurator6.Client.Pages
       LampColors = await lampColorService.GetLampColors();
       await base.OnInitializedAsync();
     }
-    public void Create()
+    public async void Create()
     {
       Console.WriteLine("configuration created");
       if (LuminaireConfigurationService != null)
-        LuminaireConfigurationService.PostLuminaireConfiguration(new LuminaireConfiguration
+      {
+        LuminaireConfiguration? createdLuminaireConfiguration = await LuminaireConfigurationService.PostLuminaireConfiguration(new LuminaireConfiguration
         {
           CreationTime = DateTime.Now,
           LampColor=Configuration.LampColor.Temperature,
@@ -43,6 +46,11 @@ namespace LuminaireConfigurator6.Client.Pages
           Name=Configuration.Name,
           Price=Configuration.Price,
         });
+        if (createdLuminaireConfiguration != null)
+        {
+          NavigationManager.NavigateTo($"configurationdetails/{createdLuminaireConfiguration.Id}");
+        }
+      }
     }
     private void EditContextFieldChanged(object? sender, FieldChangedEventArgs e)
     {

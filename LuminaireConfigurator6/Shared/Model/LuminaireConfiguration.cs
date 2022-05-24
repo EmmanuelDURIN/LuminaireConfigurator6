@@ -1,4 +1,6 @@
-﻿namespace LuminaireConfigurator6.Shared.Model
+﻿using System.Text.Json.Serialization;
+
+namespace LuminaireConfigurator6.Shared.Model
 {
   public class LuminaireConfiguration
   {
@@ -9,6 +11,5 @@
     public string Optic { get; set; } = "";
     public DateTime CreationTime { get; set; }
     public int LampColor { get; set; }
-
   }
 }

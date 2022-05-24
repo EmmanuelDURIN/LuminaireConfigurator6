@@ -1,5 +1,7 @@
 ﻿using LuminaireConfigurator6.Shared.Model;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace LuminaireConfigurator6.Client.Services
 {
@@ -20,9 +22,21 @@ namespace LuminaireConfigurator6.Client.Services
       var lumConfs = await httpClient.GetFromJsonAsync<List<LuminaireConfiguration>>("luminaireconfiguration");
       return lumConfs??new List<LuminaireConfiguration>();
     }
-    public async Task PostLuminaireConfiguration(LuminaireConfiguration luminaireConfiguration)
+    public async Task<LuminaireConfiguration?> PostLuminaireConfiguration(LuminaireConfiguration luminaireConfiguration)
     {
-      await httpClient.PostAsJsonAsync("luminaireconfiguration", luminaireConfiguration);
+      HttpResponseMessage httpResponseMessage = await httpClient.PostAsJsonAsync("luminaireconfiguration", luminaireConfiguration);
+      httpResponseMessage.EnsureSuccessStatusCode();
+      if (httpResponseMessage.IsSuccessStatusCode)
+      {
+        LuminaireConfiguration? createdLuminaireConfiguration = await httpResponseMessage.Content.ReadFromJsonAsync<LuminaireConfiguration>();
+        return createdLuminaireConfiguration;
+        //int id = 0;
+        //if (int.TryParse(httpResponseMessage.Headers.Location?.Segments.LastOrDefault(), out id))
+        //{
+        //  return new LuminaireConfiguration { Id = id };
+        //}
+      }
+      return null;
     }
     public async Task<(LuminaireConfiguration[] configurations, int totalConfigurations)>
        GetRangeWithDelay(int startIndex, int count, CancellationToken cancellationToken)
