@@ -9,7 +9,6 @@
     public string Optic { get; set; } = "";
     public DateTime CreationTime { get; set; }
     public int LampColor { get; set; }
-
     public override bool Equals(object? obj)
     {
       return Equals(obj as LuminaireConfiguration);

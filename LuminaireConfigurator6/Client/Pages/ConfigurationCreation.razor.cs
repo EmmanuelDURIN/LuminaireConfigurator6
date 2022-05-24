@@ -8,13 +8,15 @@ namespace LuminaireConfigurator6.Client.Pages
   public partial class ConfigurationCreation
   {
     [Inject]
+    public NavigationManager NavigationManager { get; set; } = null!;
+    [Inject]
     public ILuminaireConfigurationService? LuminaireConfigurationService { get; set; }
     public EditContext EditContext { get; set; }
     private ValidationMessageStore messageStore;
     public bool IsModified { get => EditContext.IsModified(); }
-    public ViewModel.LuminaireConfiguration Configuration { get; set; } = new ();
-    public List<LampColor> LampColors { get; set; } = new ();
-    public List<Optic> Optics { get; set; } = new ();
+    public ViewModel.LuminaireConfiguration Configuration { get; set; } = new();
+    public List<LampColor> LampColors { get; set; } = new();
+    public List<Optic> Optics { get; set; } = new();
     public ConfigurationCreation()
     {
       EditContext = new(Configuration);
@@ -33,16 +35,7 @@ namespace LuminaireConfigurator6.Client.Pages
     public void Create()
     {
       Console.WriteLine("configuration created");
-      if (LuminaireConfigurationService != null)
-        LuminaireConfigurationService.PostLuminaireConfiguration(new LuminaireConfiguration
-        {
-          CreationTime = DateTime.Now,
-          LampColor=Configuration.LampColor.Temperature,
-          Optic=Configuration.Optic.Name,
-          LampFlux=Configuration.LampFlux,
-          Name=Configuration.Name,
-          Price=Configuration.Price,
-        });
+      NavigationManager.NavigateTo("/");
     }
     private void EditContextFieldChanged(object? sender, FieldChangedEventArgs e)
     {
