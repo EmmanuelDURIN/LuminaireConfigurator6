@@ -64,9 +64,9 @@ namespace LuminaireConfigurator6.Server.Controllers
       if (!ModelState.IsValid)
         return ValidationProblem(ModelState);
       int maxId = luminaireConfigurations.Max(l => l.Id);
-      lumConf.Id = maxId;
+      lumConf.Id = maxId +1;
       luminaireConfigurations.Add(lumConf);
-      return CreatedAtAction(nameof(GetById), routeValues: new { Id = maxId }, lumConf);
+      return CreatedAtAction(nameof(GetById), routeValues: new { Id = lumConf.Id }, lumConf);
     }
   }
 }
