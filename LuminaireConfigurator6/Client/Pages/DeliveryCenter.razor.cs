@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace LuminaireConfigurator6.Client.Pages
 {
-  public partial class DeliveryCenter
+  public partial class DeliveryCenter : IDeliveryCenterNotification
   {
     [Inject]
     public NavigationManager? NavigationManager { get; set; }
@@ -30,12 +30,7 @@ namespace LuminaireConfigurator6.Client.Pages
           .WithUrl(NavigationManager.ToAbsoluteUri("/deliveryhub"))
           .Build();
       hubConnection.On<LuminaireConfiguration>(nameof(IDeliveryCenterNotification.OnConfigurationDelivered),
-        (lumConf) =>
-        {
-          Console.WriteLine("Client got delivery removed");
-          LuminaireConfigurations.Remove(lumConf);
-          StateHasChanged();
-        });
+                                               OnConfigurationDelivered);
       await hubConnection.StartAsync();
       luminaireConfigurations = await hubConnection.InvokeAsync<List<LuminaireConfiguration>>("GetDeliveries");
     }
@@ -50,6 +45,13 @@ namespace LuminaireConfigurator6.Client.Pages
     protected async override Task OnInitializedAsync()
     {
       await ConnectToHub();
+    }
+    public Task OnConfigurationDelivered(LuminaireConfiguration lumConf)
+    {
+      Console.WriteLine("Client got delivery removed");
+      LuminaireConfigurations.Remove(lumConf);
+      StateHasChanged();
+      return Task.CompletedTask;
     }
   }
 }
