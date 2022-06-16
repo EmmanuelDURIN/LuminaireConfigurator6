@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.ResponseCompression;
+using LuminaireConfigurator6.Server.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<LuminaireRepository>();
 
 var app = builder.Build();
 

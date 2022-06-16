@@ -1,3 +1,4 @@
+using LuminaireConfigurator6.Server.Repositories;
 using LuminaireConfigurator6.Shared.Model;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,52 +8,22 @@ namespace LuminaireConfigurator6.Server.Controllers
   [Route("[controller]")]
   public class LuminaireConfigurationController : ControllerBase
   {
-    private static List<LuminaireConfiguration> luminaireConfigurations = new List<LuminaireConfiguration>()
-            {
-              new LuminaireConfiguration
-              {
-                Id=1,
-                CreationTime = new DateTime(2020,11,8),
-                LampColor = 5400,
-                LampFlux = 2000,
-                Optic = "OM10",
-                Name="Luminaires Nanterre"
-              },
-              new LuminaireConfiguration
-              {
-                Id=2,
-                CreationTime = new DateTime(2020,12,9),
-                LampColor = 5700,
-                LampFlux = 3000,
-                Optic = "OM11",
-                Name="Luminaires Courbevoie"
-              },
-              new LuminaireConfiguration
-              {
-                Id=3,
-                CreationTime = new DateTime(2021,1,4),
-                LampColor = 5700,
-                LampFlux = 10000,
-                Optic = "OM12",
-                Name="Luminaires Puteaux"
-              },
-            };
-
-    private readonly ILogger<LuminaireConfigurationController> _logger;
-    public LuminaireConfigurationController(ILogger<LuminaireConfigurationController> logger)
+    private readonly LuminaireRepository luminaireRepository;
+    private readonly ILogger<LuminaireConfigurationController> logger;
+    public LuminaireConfigurationController(LuminaireRepository luminaireRepository, ILogger<LuminaireConfigurationController> logger)
     {
-      _logger = logger;
+      this.luminaireRepository = luminaireRepository;
+      this.logger = logger;
     }
     [HttpGet]
     public List<LuminaireConfiguration> Get()
     {
-      return luminaireConfigurations;
+      return luminaireRepository.GetAllLuminaires();
     }
     [HttpGet("{id}")]
     public ActionResult GetById(int id)
     {
-      LuminaireConfiguration? lumConf = luminaireConfigurations
-                                         .FirstOrDefault(l => l.Id == id);
+      LuminaireConfiguration? lumConf = luminaireRepository.GetLuminaireById(id);
       if (lumConf == null)
         return NotFound("No Luminaire with id=" + id);
       return Ok(lumConf);
@@ -63,9 +34,7 @@ namespace LuminaireConfigurator6.Server.Controllers
     {
       if (!ModelState.IsValid)
         return ValidationProblem(ModelState);
-      int maxId = luminaireConfigurations.Max(l => l.Id);
-      lumConf.Id = maxId +1;
-      luminaireConfigurations.Add(lumConf);
+      luminaireRepository.InsertLuminaire(lumConf);
       return CreatedAtAction(nameof(GetById), routeValues: new { Id = lumConf.Id }, lumConf);
     }
   }
