@@ -49,7 +49,7 @@ namespace LuminaireConfigurator6.Server.Controllers
       return luminaireConfigurations;
     }
     [HttpGet("{id}")]
-    public ActionResult GetById(int id)
+    public ActionResult<LuminaireConfiguration> GetById(int id)
     {
       LuminaireConfiguration? lumConf = luminaireConfigurations
                                          .FirstOrDefault(l => l.Id == id);
@@ -59,7 +59,7 @@ namespace LuminaireConfigurator6.Server.Controllers
     }
     [HttpPost]
 
-    public ActionResult PostAsync(LuminaireConfiguration lumConf)
+    public ActionResult Post(LuminaireConfiguration lumConf)
     {
       if (!ModelState.IsValid)
         return ValidationProblem(ModelState);

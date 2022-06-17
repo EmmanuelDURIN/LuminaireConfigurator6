@@ -1,7 +1,5 @@
 ﻿using LuminaireConfigurator6.Shared.Model;
 using System.Net.Http.Json;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace LuminaireConfigurator6.Client.Services
 {
@@ -14,13 +12,13 @@ namespace LuminaireConfigurator6.Client.Services
     }
     public async Task<LuminaireConfiguration?> GetLuminaireConfigurationById(int id)
     {
-      var lumConf = await httpClient.GetFromJsonAsync<LuminaireConfiguration>("luminaireconfiguration/"+id);
+      var lumConf = await httpClient.GetFromJsonAsync<LuminaireConfiguration>("luminaireconfiguration/" + id);
       return lumConf;
     }
     public async Task<List<LuminaireConfiguration>> GetLuminaireConfigurations()
     {
       var lumConfs = await httpClient.GetFromJsonAsync<List<LuminaireConfiguration>>("luminaireconfiguration");
-      return lumConfs??new List<LuminaireConfiguration>();
+      return lumConfs ?? new List<LuminaireConfiguration>();
     }
 
     public async Task<LuminaireConfiguration?> PostLuminaireConfiguration(LuminaireConfiguration luminaireConfiguration)
