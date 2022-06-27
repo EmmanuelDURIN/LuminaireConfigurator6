@@ -44,7 +44,7 @@ namespace LuminaireConfigurator6.Client.Services
       await Task.Delay(1000);
       return await GetRange(startIndex, count, cancellationToken);
     }
-    public async Task<(LuminaireConfiguration[] configurations, int totalForeCasts)>
+    public async Task<(LuminaireConfiguration[] configurations, int totalConfigurations)>
         GetRange(int startIndex, int count, CancellationToken cancellationToken)
     {
       int totalConfigurations = await httpClient.GetFromJsonAsync<int>("LuminaireConfiguration/count");

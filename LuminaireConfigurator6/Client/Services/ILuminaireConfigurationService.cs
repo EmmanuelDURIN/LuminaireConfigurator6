@@ -8,7 +8,7 @@ namespace LuminaireConfigurator6.Client.Services
     Task<List<LuminaireConfiguration>> GetLuminaireConfigurations();
     Task<(LuminaireConfiguration[] configurations, int totalConfigurations)>
     GetRangeWithDelay(int startIndex, int count, CancellationToken cancellationToken);
-    Task<(LuminaireConfiguration[] configurations, int totalForeCasts)>
+    Task<(LuminaireConfiguration[] configurations, int totalConfigurations)>
     GetRange(int startIndex, int count, CancellationToken cancellationToken);
     Task<LuminaireConfiguration?> PostLuminaireConfiguration(LuminaireConfiguration luminaireConfiguration);
   }
