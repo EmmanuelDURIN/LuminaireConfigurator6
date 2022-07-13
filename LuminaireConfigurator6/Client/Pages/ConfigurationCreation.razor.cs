@@ -10,7 +10,7 @@ namespace LuminaireConfigurator6.Client.Pages
     [Inject]
     public NavigationManager NavigationManager { get; set; } = null!;
     [Inject]
-    public ILuminaireConfigurationService? LuminaireConfigurationService { get; set; }
+    public ILuminaireConfigurationService LuminaireConfigurationService { get; set; } = null!;
     public EditContext EditContext { get; set; }
     private ValidationMessageStore messageStore;
     public bool IsModified { get => EditContext.IsModified(); }
@@ -34,6 +34,16 @@ namespace LuminaireConfigurator6.Client.Pages
     }
     public void Create()
     {
+      LuminaireConfigurationService.PostLuminaireConfiguration(
+        new LuminaireConfiguration
+        {
+          CreationTime = DateTime.Now,
+          Name = Configuration.Name,
+          LampColor = Configuration.LampColor.Temperature,
+          LampFlux = Configuration.LampFlux,
+          Optic = Configuration.Optic.Name,
+          Price = Configuration.Price,
+        });
       Console.WriteLine("configuration created");
       NavigationManager.NavigateTo("/");
     }

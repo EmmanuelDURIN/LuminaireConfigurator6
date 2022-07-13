@@ -31,12 +31,5 @@ namespace LuminaireConfigurator6.Client.Components
     {
       return base.OnParametersSetAsync();
     }
-    //protected async override Task OnInitializedAsync()
-    //{
-    //  if (LuminaireConfigurationService != null)
-    //    Configuration = await LuminaireConfigurationService.GetLuminaireConfigurationById(Id);
-    //  if (Configuration == null && NavigationManager != null)
-    //    NavigationManager.NavigateTo("NotFound");
-    //}
   }
 }
