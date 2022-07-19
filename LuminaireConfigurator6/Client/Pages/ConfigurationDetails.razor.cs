@@ -7,7 +7,8 @@ namespace LuminaireConfigurator6.Client.Pages
   public partial class ConfigurationDetails
   {
     [Inject]
-    public NavigationManager? NavigationManager { get; set; }
+    // ! null forgiving operator 
+    public NavigationManager NavigationManager { get; set; } = null!;
     private int id;
     [Parameter]
     public int Id { get => id; set => id = value; }
@@ -32,7 +33,7 @@ namespace LuminaireConfigurator6.Client.Pages
     {
       LuminaireConfigurationService luminaireConfigurationService = new LuminaireConfigurationService();
       Configuration = luminaireConfigurationService.GetLuminaireConfigurationById(Id);
-      if (Configuration == null && NavigationManager != null)
+      if (Configuration == null)
         NavigationManager.NavigateTo("NotFound");
       return Task.FromResult(0);
     }
