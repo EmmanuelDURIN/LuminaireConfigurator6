@@ -12,10 +12,10 @@ namespace LuminaireConfigurator6.Client.Shared
     public IEnumerable<TItem> Items { get; set; } = Enumerable.Empty<TItem>();
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
-    [Parameter]
-    public Func<TItem, TValue>? ValueSelector { get; set; }
-    [Parameter]
-    public Func<TItem, TDisplay>? DisplaySelector { get; set; }
+    [Parameter, EditorRequired]
+    public Func<TItem, TValue> ValueSelector { get; set; } = null!;
+    [Parameter, EditorRequired]
+    public Func<TItem, TDisplay> DisplaySelector { get; set; } = null!;
     [Parameter]
     public EventCallback<TItem> SelectedChanged { get; set; }
 
@@ -26,10 +26,7 @@ namespace LuminaireConfigurator6.Client.Shared
       set
       {
         selectedValue = value;
-
-        Selected = Items==null
-          ?default(TItem?)
-          :Items.FirstOrDefault(i => ValueSelector != null && ValueSelector(i)?.ToString()?.Equals(value?.ToString()) == true);
+        Selected = Items.FirstOrDefault(i =>  ValueSelector(i)?.ToString()?.Equals(value?.ToString()) == true);
         SelectedChanged.InvokeAsync(Selected);
       }
     }
