@@ -15,12 +15,8 @@ namespace LuminaireConfigurator6.Client.Pages
         if (selectedConfiguration != value)
         {
           selectedConfiguration = value;
-          SelectedConfigurationChanged.InvokeAsync(value);
         }
       }
     }
-    [Parameter]
-    public EventCallback<LuminaireConfiguration?> SelectedConfigurationChanged
-    { get; set; }
   }
 }
