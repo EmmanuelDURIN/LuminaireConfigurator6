@@ -9,7 +9,7 @@
     }
     @if (ValueSelector != null && DisplaySelector != null)
     {
-        foreach (var item in Items)
+        foreach (TItem item in Items)
         {
             bool isSelected = item.Equals(Selected);
             <option value="@ValueSelector(item)" selected="@isSelected">@DisplaySelector(item)</option>
