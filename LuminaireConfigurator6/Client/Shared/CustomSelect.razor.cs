@@ -9,7 +9,7 @@ namespace LuminaireConfigurator6.Client.Shared
     [Parameter]
     public TItem? Selected { get; set; }
     [Parameter]
-    public IEnumerable<TItem> Items { get; set; } = Enumerable.Empty<TItem>();
+    public IEnumerable<TItem>? Items { get; set; } = Enumerable.Empty<TItem>();
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
     [Parameter, EditorRequired]
