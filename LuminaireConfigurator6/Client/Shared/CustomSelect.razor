@@ -7,15 +7,9 @@
     {
         @ChildContent
     }
-    @if (ValueSelector != null && DisplaySelector != null)
+    @foreach (TItem item in Items)
     {
-        if (Items != null)
-        {
-            foreach (var item in Items)
-            {
-                bool isSelected = item?.Equals(Selected) == true;
-                <option value="@ValueSelector(item)" selected="@isSelected">@DisplaySelector(item)</option>
-            }
-        }
+        bool isSelected = item?.Equals(Selected) ?? false;
+        <option value="@ValueSelector(item)" selected="@isSelected">@DisplaySelector(item)</option>
     }
 </select>
