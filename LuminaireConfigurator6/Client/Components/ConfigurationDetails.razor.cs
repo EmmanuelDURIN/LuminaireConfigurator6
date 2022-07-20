@@ -1,4 +1,5 @@
-﻿using LuminaireConfigurator6.Client.Services;
+﻿using LuminaireConfigurator6.Client.Pages;
+using LuminaireConfigurator6.Client.Services;
 using LuminaireConfigurator6.Shared.Model;
 using Microsoft.AspNetCore.Components;
 
@@ -13,8 +14,29 @@ namespace LuminaireConfigurator6.Client.Components
     private int id;
     [Parameter]
     public int Id { get => id; set => id = value; }
+    private ISelectionProvider? selectionProvider;
+    [CascadingParameter(Name = "SelectionProvider")]
+    public ISelectionProvider? SelectionProvider
+    {
+      get { return selectionProvider; }
+      set { 
+        selectionProvider = value;
+        if (selectionProvider != null)
+        {
+          selectionProvider.PropertyChanged += SelectionProviderPropertyChanged; ;
+        }
+      }
+    }
+    private void SelectionProviderPropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+      if (e.PropertyName == nameof(ISelectionProvider.SelectedConfiguration) 
+        && selectionProvider !=null)
+      {
+        configuration = selectionProvider.SelectedConfiguration;
+        StateHasChanged();
+      }
+    }
     private LuminaireConfiguration? configuration;
-    [Parameter]
     public LuminaireConfiguration? Configuration
     {
       get => configuration;

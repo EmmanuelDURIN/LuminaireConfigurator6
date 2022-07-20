@@ -1,11 +1,15 @@
 ﻿@page "/masterdetail"
 @using LuminaireConfigurator6.Client.Components
 
-<div class="container">
-  <div class="row">
-    <div class="col"><ConfigurationList @bind-SelectedConfiguration="@SelectedConfiguration"/>
+<CascadingValue Value="this" Name="SelectionProvider">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <ConfigurationList  />
+            </div>
+            <div class="col">
+                <ConfigurationDetails  />
+            </div>
+        </div>
     </div>
-    <div class="col"><ConfigurationDetails Configuration="@SelectedConfiguration"/>
-    </div>
-  </div>
-</div>
+</CascadingValue>

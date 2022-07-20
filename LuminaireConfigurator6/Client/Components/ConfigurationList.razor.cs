@@ -1,4 +1,5 @@
-﻿using LuminaireConfigurator6.Client.Services;
+﻿using LuminaireConfigurator6.Client.Pages;
+using LuminaireConfigurator6.Client.Services;
 using LuminaireConfigurator6.Shared.Model;
 using Microsoft.AspNetCore.Components;
 
@@ -21,9 +22,17 @@ namespace LuminaireConfigurator6.Client.Components
       if (LuminaireConfigurationService != null)
         luminaireConfigurations = await LuminaireConfigurationService.GetLuminaireConfigurations();
     }
-
+    private ISelectionProvider? selectionProvider;
+    [CascadingParameter(Name = "SelectionProvider")]
+    public ISelectionProvider? SelectionProvider
+    {
+      get { return selectionProvider; }
+      set
+      {
+        selectionProvider = value;
+      }
+    }
     private LuminaireConfiguration? selectedConfiguration;
-    [Parameter]
     public LuminaireConfiguration? SelectedConfiguration
     {
       get { return selectedConfiguration; }
@@ -33,6 +42,10 @@ namespace LuminaireConfigurator6.Client.Components
         {
           selectedConfiguration = value;
           SelectedConfigurationChanged.InvokeAsync(value);
+          if (selectionProvider != null)
+          {
+            selectionProvider.SelectedConfiguration = value;
+          }
         }
       }
     }
