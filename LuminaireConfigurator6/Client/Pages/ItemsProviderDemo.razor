@@ -5,41 +5,37 @@
 <h1>Configuration List</h1>
 
 <p>List of configurations</p>
-
-@if (luminaireConfigurations == null)
+@if (!isFirstSetOfDataLoaded)
 {
-    <p><em>Loading...</em></p>
+    <div>Loading &hellip;</div>
 }
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Configuration Name</th>
-                <th>Creation Date</th>
-                <th>Lamp Color (°K)</th>
-                <th>Optic</th>
-                <th>LampFlux (lm)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <Virtualize Context="configuration" ItemsProvider="@LoadLuminaireConfigurations">
-                <ItemContent>
-                    <tr>
-                        <td><a href="configurationdetails/@configuration.Id">@configuration.Name</a></td>
-                        <td>@configuration.CreationTime.ToShortDateString()</td>
-                        <td>@configuration.LampColor</td>
-                        <td>@configuration.Optic</td>
-                        <td>@configuration.LampFlux</td>
-                    </tr>
-                </ItemContent>
-                <Placeholder>
-                    <div>
-                        Loading&hellip;
-                    </div>
-                </Placeholder>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Configuration Name</th>
+            <th>Creation Date</th>
+            <th>Lamp Color (°K)</th>
+            <th>Optic</th>
+            <th>LampFlux (lm)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <Virtualize Context="configuration" ItemsProvider="@LoadLuminaireConfigurations">
+            <ItemContent>
+                <tr>
+                    <td><a href="configurationdetails/@configuration.Id">@configuration.Name</a></td>
+                    <td>@configuration.CreationTime.ToShortDateString()</td>
+                    <td>@configuration.LampColor</td>
+                    <td>@configuration.Optic</td>
+                    <td>@configuration.LampFlux</td>
+                </tr>
+            </ItemContent>
+            <Placeholder>
+                <div>
+                    Loading&hellip;
+                </div>
+            </Placeholder>
 
-            </Virtualize>
-        </tbody>
-    </table>
-}
+        </Virtualize>
+    </tbody>
+</table>
