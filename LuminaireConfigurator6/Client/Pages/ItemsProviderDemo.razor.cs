@@ -7,33 +7,10 @@ namespace LuminaireConfigurator6.Client.Pages
 {
   public partial class ItemsProviderDemo
   {
+    private bool isFirstSetOfDataLoaded;
     [Inject]
     private ILuminaireConfigurationService? LuminaireConfigurationService { get; set; }
 
-    private LuminaireConfiguration[]? luminaireConfigurations;
-    public LuminaireConfiguration[]? LuminaireConfigurations
-    {
-      get => luminaireConfigurations;
-      set => luminaireConfigurations = value;
-    }
-    protected override Task OnInitializedAsync()
-    {
-      Console.WriteLine("Before Enumerable.Range");
-      LuminaireConfigurations = Enumerable.Range(1, 500_000)
-                                          .Select(
-                                            i => new LuminaireConfiguration
-                                            {
-                                              Id = i,
-                                              Name = "Luminaire" + i,
-                                              CreationTime = DateTime.Now,
-                                              LampColor = 3000 + (i % 2000),
-                                              Optic = "OM" + (i % 10),
-                                              LampFlux = 1000,
-                                            })
-                                          .ToArray();
-      Console.WriteLine("After Enumerable.Range");
-      return Task.FromResult(0);
-    }
     private async ValueTask<ItemsProviderResult<LuminaireConfiguration>> LoadLuminaireConfigurations(
                                                                          ItemsProviderRequest request)
     {
@@ -43,6 +20,11 @@ namespace LuminaireConfigurator6.Client.Pages
           await LuminaireConfigurationService.GetRangeWithDelay(request.StartIndex,
                                          request.Count,
                                          request.CancellationToken);
+        if (!isFirstSetOfDataLoaded)
+        {
+          isFirstSetOfDataLoaded = true;
+          StateHasChanged();
+        }
         return new ItemsProviderResult<LuminaireConfiguration>(luminaireConfigurations, totalConfigurations);
       }
       else
