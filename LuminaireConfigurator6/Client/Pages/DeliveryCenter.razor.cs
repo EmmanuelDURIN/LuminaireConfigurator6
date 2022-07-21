@@ -38,7 +38,7 @@ namespace LuminaireConfigurator6.Client.Pages
     {
       if (SelectedConfiguration != null && hubConnection != null)
       {
-        await hubConnection.InvokeAsync<List<LuminaireConfiguration>>("ConfigurationDelivered", SelectedConfiguration);
+        await hubConnection.InvokeAsync("ConfigurationDelivered", SelectedConfiguration);
         SelectedConfiguration = null;
       }
     }
