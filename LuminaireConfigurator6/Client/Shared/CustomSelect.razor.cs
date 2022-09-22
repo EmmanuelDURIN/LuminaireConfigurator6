@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace LuminaireConfigurator6.Client.Shared
 {
-  public partial class CustomSelect<TItem,TValue,TDisplay> : ComponentBase
+  public partial class CustomSelect<TItem, TValue, TDisplay> : ComponentBase
   {
+    [CascadingParameter]
+    public EditContext? EditContext { get; set; }
+    public ValidationMessageStore? messageStore { get; set; }
     [Parameter]
     public TItem? Selected { get; set; }
     [Parameter]
@@ -24,9 +28,20 @@ namespace LuminaireConfigurator6.Client.Shared
       set
       {
         selectedValue = value;
-        Selected = Items.FirstOrDefault(i =>  ValueSelector(i)?.ToString()?.Equals(value?.ToString()) == true);
+        Selected = Items.FirstOrDefault(i => ValueSelector(i)?.ToString()?.Equals(value?.ToString()) == true);
+        //if (messageStore != null)
+        //{
+        messageStore?.Clear();
+        //if (Selected == null)
+        messageStore?.Add(new FieldIdentifier(EditContext.Model, "Optic"), "field is required");
+        //}
         SelectedChanged.InvokeAsync(Selected);
       }
+    }
+    protected override void OnInitialized()
+    {
+      if (EditContext != null)
+        messageStore = new ValidationMessageStore(EditContext);
     }
   }
 }
