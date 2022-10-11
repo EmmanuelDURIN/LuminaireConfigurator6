@@ -41,7 +41,7 @@ namespace LuminaireConfigurator6.Client.Services
     public async Task<(LuminaireConfiguration[] configurations, int totalConfigurations)>
        GetRangeWithDelay(int startIndex, int count, CancellationToken cancellationToken)
     {
-      await Task.Delay(1000);
+      //await Task.Delay(1000);
       return await GetRange(startIndex, count, cancellationToken);
     }
     public async Task<(LuminaireConfiguration[] configurations, int totalConfigurations)>
