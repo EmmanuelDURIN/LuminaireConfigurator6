@@ -33,7 +33,8 @@ namespace LuminaireConfigurator6.Client.Shared
         //{
         messageStore?.Clear();
         //if (Selected == null)
-        messageStore?.Add(new FieldIdentifier(EditContext.Model, "Optic"), "field is required");
+        if (EditContext != null)
+            messageStore?.Add(new FieldIdentifier(EditContext.Model, "Optic"), "field is required");
         //}
         SelectedChanged.InvokeAsync(Selected);
       }
