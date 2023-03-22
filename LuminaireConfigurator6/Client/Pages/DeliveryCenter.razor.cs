@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace LuminaireConfigurator6.Client.Pages
 {
-  public partial class DeliveryCenter : IDeliveryCenterNotification
+  public partial class DeliveryCenter : IDeliveryCenterNotification, IAsyncDisposable
   {
     [Inject]
     public NavigationManager? NavigationManager { get; set; }
@@ -15,11 +15,22 @@ namespace LuminaireConfigurator6.Client.Pages
       get => luminaireConfigurations;
       set => luminaireConfigurations = value;
     }
+    [Parameter]
+    public EventCallback<LuminaireConfiguration> LuminaireConfigurationChanged { get; set; }
     private LuminaireConfiguration? selectedConfiguration;
+    [Parameter]
     public LuminaireConfiguration? SelectedConfiguration
     {
       get { return selectedConfiguration; }
-      set { selectedConfiguration = value; }
+      set 
+      {
+        Console.WriteLine($"Trying to select value:{value?.Name}, selectedConfiguration:{selectedConfiguration?.Name}" );
+        if (selectedConfiguration != value)
+        {
+            selectedConfiguration = value;
+            LuminaireConfigurationChanged.InvokeAsync(value);
+        }
+      }
     }
     private HubConnection? hubConnection = null;
     private async Task ConnectToHub()
@@ -38,8 +49,8 @@ namespace LuminaireConfigurator6.Client.Pages
     {
       if (SelectedConfiguration != null && hubConnection != null)
       {
+        await Console.Out.WriteLineAsync(  "Delivering configuration" );
         await hubConnection.InvokeAsync("ConfigurationDelivered", SelectedConfiguration);
-        SelectedConfiguration = null;
       }
     }
     protected async override Task OnInitializedAsync()
@@ -49,9 +60,16 @@ namespace LuminaireConfigurator6.Client.Pages
     public Task OnConfigurationDelivered(LuminaireConfiguration lumConf)
     {
       Console.WriteLine("Client got delivery removed");
+      if (lumConf.Equals(SelectedConfiguration)) 
+        SelectedConfiguration = null;
       LuminaireConfigurations.Remove(lumConf);
       StateHasChanged();
       return Task.CompletedTask;
+    }
+    public async ValueTask DisposeAsync()
+    {
+      if(hubConnection!=null)
+        await hubConnection.StopAsync();
     }
   }
 }

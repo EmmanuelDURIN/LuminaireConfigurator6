@@ -24,15 +24,5 @@
     {
       return HashCode.Combine(Id);
     }
-
-    public static bool operator ==(LuminaireConfiguration? left, LuminaireConfiguration? right)
-    {
-      return EqualityComparer<LuminaireConfiguration>.Default.Equals(left, right);
-    }
-
-    public static bool operator !=(LuminaireConfiguration? left, LuminaireConfiguration? right)
-    {
-      return !(left == right);
-    }
   }
 }
