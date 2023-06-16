@@ -4,6 +4,12 @@ namespace LuminaireConfigurator6.Client.Services
 {
     public class LuminaireConfigurationService : ILuminaireConfigurationService
     {
+        private readonly HttpClient httpClient;
+        // 3) on se fait injecter HttpClient, par le système DI
+        public LuminaireConfigurationService(HttpClient httpClient)
+        {
+            this.httpClient = httpClient;
+        }
         private List<LuminaireConfiguration> luminaireConfigurations = new List<LuminaireConfiguration>()
             {
               new LuminaireConfiguration
