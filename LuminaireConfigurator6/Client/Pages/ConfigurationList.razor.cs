@@ -1,21 +1,28 @@
 ﻿using LuminaireConfigurator6.Client.Services;
 using LuminaireConfigurator6.Shared.Model;
+using Microsoft.AspNetCore.Components;
 
 namespace LuminaireConfigurator6.Client.Pages
 {
-  public partial class ConfigurationList
-  {
-    private List<LuminaireConfiguration>? luminaireConfigurations = null;
-    public List<LuminaireConfiguration>? LuminaireConfigurations
+    public partial class ConfigurationList
     {
-      get => luminaireConfigurations;
-      set => luminaireConfigurations = value;
-    }
+        // 2) déclaration de dépendance, et demande d'injection
+        [Inject]
+        // ! null forgiving operator
+        public ILuminaireConfigurationService LuminaireConfigurationService { get; set; } = null!;
 
-    protected override async  Task OnInitializedAsync()
-    {
-      base.OnInitialized();
-      luminaireConfigurations = await new LuminaireConfigurationService().GetLuminaireConfigurations();
+        private List<LuminaireConfiguration>? luminaireConfigurations = null;
+        public List<LuminaireConfiguration>? LuminaireConfigurations
+        {
+            get => luminaireConfigurations;
+            set => luminaireConfigurations = value;
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            base.OnInitialized();
+            luminaireConfigurations = await LuminaireConfigurationService.GetLuminaireConfigurations();
+            //luminaireConfigurations = await new LuminaireConfigurationService().GetLuminaireConfigurations();
+        }
     }
-  }
 }

@@ -2,9 +2,9 @@
 
 namespace LuminaireConfigurator6.Client.Services
 {
-  public class LuminaireConfigurationService
-  {
-    private List<LuminaireConfiguration> luminaireConfigurations = new List<LuminaireConfiguration>()
+    public class LuminaireConfigurationService : ILuminaireConfigurationService
+    {
+        private List<LuminaireConfiguration> luminaireConfigurations = new List<LuminaireConfiguration>()
             {
               new LuminaireConfiguration
               {
@@ -34,14 +34,14 @@ namespace LuminaireConfigurator6.Client.Services
                 Name="Luminaires Puteaux"
               },
             };
-    public LuminaireConfiguration? GetLuminaireConfigurationById(int id)
-    {
-      return luminaireConfigurations.FirstOrDefault(lc => lc.Id == id);
+        public Task<LuminaireConfiguration?> GetLuminaireConfigurationById(int id)
+        {
+            return Task.FromResult(luminaireConfigurations.FirstOrDefault(lc => lc.Id == id));
+        }
+        public async Task<List<LuminaireConfiguration>> GetLuminaireConfigurations()
+        {
+            await Task.Delay(500);
+            return luminaireConfigurations;
+        }
     }
-    public async Task<List<LuminaireConfiguration>> GetLuminaireConfigurations()
-    {
-      await Task.Delay(500);
-      return luminaireConfigurations;
-    }
-  }
 }

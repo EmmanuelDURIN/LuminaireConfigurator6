@@ -1,12 +1,16 @@
 ﻿using LuminaireConfigurator6.Client.Services;
 using LuminaireConfigurator6.Shared.Model;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace LuminaireConfigurator6.Client.Pages
 {
   public partial class ConfigurationCreation
   {
-    public EditContext EditContext { get; set; }
+    [Inject]
+    // ! null forgiving operator
+    public ILuminaireConfigurationService LuminaireConfigurationService { get; set; } = null!;
+        public EditContext EditContext { get; set; }
     private ValidationMessageStore messageStore;
     public bool IsModified { get => EditContext.IsModified(); }
     public ViewModel.LuminaireConfiguration Configuration { get; set; } = new ();
