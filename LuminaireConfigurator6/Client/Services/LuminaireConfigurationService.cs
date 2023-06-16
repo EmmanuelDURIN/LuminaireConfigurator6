@@ -1,4 +1,5 @@
 ﻿using LuminaireConfigurator6.Shared.Model;
+using System.Net.Http.Json;
 
 namespace LuminaireConfigurator6.Client.Services
 {
@@ -10,44 +11,25 @@ namespace LuminaireConfigurator6.Client.Services
         {
             this.httpClient = httpClient;
         }
-        private List<LuminaireConfiguration> luminaireConfigurations = new List<LuminaireConfiguration>()
-            {
-              new LuminaireConfiguration
-              {
-                Id=1,
-                CreationTime = new DateTime(2020,11,8),
-                LampColor = 5400,
-                LampFlux = 2000,
-                Optic = "OM10",
-                Name="Luminaires Nanterre"
-              },
-              new LuminaireConfiguration
-              {
-                Id=2,
-                CreationTime = new DateTime(2020,12,9),
-                LampColor = 5700,
-                LampFlux = 3000,
-                Optic = "OM11",
-                Name="Luminaires Courbevoie"
-              },
-              new LuminaireConfiguration
-              {
-                Id=3,
-                CreationTime = new DateTime(2021,1,4),
-                LampColor = 5700,
-                LampFlux = 10000,
-                Optic = "OM12",
-                Name="Luminaires Puteaux"
-              },
-            };
-        public Task<LuminaireConfiguration?> GetLuminaireConfigurationById(int id)
+        public async Task<LuminaireConfiguration?> GetLuminaireConfigurationById(int id)
         {
-            return Task.FromResult(luminaireConfigurations.FirstOrDefault(lc => lc.Id == id));
+            string requestUri = $"{nameof(LuminaireConfiguration)}/{id}";
+            LuminaireConfiguration? luminaireConfiguration = await httpClient.GetFromJsonAsync<LuminaireConfiguration>(requestUri);
+            return luminaireConfiguration;
         }
         public async Task<List<LuminaireConfiguration>> GetLuminaireConfigurations()
         {
-            await Task.Delay(500);
-            return luminaireConfigurations;
+            string requestUri = nameof(LuminaireConfiguration);
+            List<LuminaireConfiguration>? luminaireConfigurations
+                = await httpClient.GetFromJsonAsync<List<LuminaireConfiguration>>(requestUri);
+            return luminaireConfigurations ?? new List<LuminaireConfiguration>();
+        }
+        public async Task PostLuminaireConfiguration(LuminaireConfiguration luminaireConfiguration)
+        {
+            string requestUri = nameof(LuminaireConfiguration);
+            //LuminaireConfiguration luminaireConfigurations
+            HttpResponseMessage httpResponseMessage
+                = await httpClient.PostAsJsonAsync(requestUri, luminaireConfiguration);
         }
     }
 }
