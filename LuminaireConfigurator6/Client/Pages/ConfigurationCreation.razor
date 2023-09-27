@@ -1,9 +1,7 @@
 ﻿@page "/configurationcreation"
-<h1>New Configuration @(IsModified?"*":"")</h1>
+<h1>New Configuration @(IsModified ? "*" : "")</h1>
 <EditForm OnValidSubmit="Create" EditContext="@EditContext">
     <DataAnnotationsValidator />
-    <ValidationSummary />
-
     <div class="form-group row mb-1">
         <label class="col-sm-3 col-form-label" for="Name">Configuration name</label>
         <div class="col-sm-9">
@@ -18,8 +16,7 @@
             <CustomSelect Items="@Optics"
                           DisplaySelector="o=>o.Name.ToUpper()"
                           ValueSelector="o=>o.Id"
-                          @bind-Selected="@Configuration.Optic">
-                <option>Please select one</option>
+                          Selected="@(() => Configuration.Optic)">
             </CustomSelect>
             <ValidationMessage For="@(()=> Configuration.Optic)" />
         </div>
@@ -30,9 +27,8 @@
         <div class="col-sm-9">
             <CustomSelect Items="@LampColors"
                           DisplaySelector="l=>l.Temperature"
-                          ValueSelector="l=>l.Id" 
-                          @bind-Selected="@Configuration.LampColor">
-                <option>Please select one</option>
+                          ValueSelector="l=>l.Id"
+                          Selected="@( () => Configuration.LampColor)">
             </CustomSelect>
             <ValidationMessage For="@(()=> Configuration.LampColor)" />
         </div>
@@ -46,6 +42,7 @@
         </div>
     </div>
     <div class="form-group mb-0">
+        <ValidationSummary />
         <button type="submit" id="buttonCreate" class="btn btn-primary">Create</button>
     </div>
 </EditForm>

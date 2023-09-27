@@ -29,6 +29,7 @@ namespace LuminaireConfigurator6.Client.Pages
     }
     public void Create()
     {
+      EditContext.MarkAsUnmodified();
       Console.WriteLine("configuration created");
     }
     private void EditContextFieldChanged(object? sender, FieldChangedEventArgs e)
