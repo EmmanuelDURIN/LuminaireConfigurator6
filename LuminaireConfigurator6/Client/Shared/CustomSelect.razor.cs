@@ -72,7 +72,6 @@ namespace LuminaireConfigurator6.Client.Shared
                 }
             }
         }
-
         private static MemberExpression GetMemberInfo(Expression method)
         {
             LambdaExpression lambda = (LambdaExpression)method;
@@ -81,20 +80,6 @@ namespace LuminaireConfigurator6.Client.Shared
             else if (lambda.Body.NodeType == ExpressionType.MemberAccess)
                 return (MemberExpression)lambda.Body;
             throw new Exception("Not a MemberExpression");
-        }
-        public static void SetValue(MemberInfo memberInfo, object forObject, TValue newValue)
-        {
-            switch (memberInfo.MemberType)
-            {
-                case MemberTypes.Field:
-                    ((FieldInfo)memberInfo).SetValue(forObject, newValue);
-                    break;
-                case MemberTypes.Property:
-                    ((PropertyInfo)memberInfo).SetValue(forObject, newValue);
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
         }
         protected override void OnInitialized()
         {
