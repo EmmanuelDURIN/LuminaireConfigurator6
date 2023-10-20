@@ -11,8 +11,8 @@ namespace LuminaireConfigurator6.Client.ViewModel
     public double LampFlux { get; set; }
     public decimal Price { get; set; }
     [Required]
-    public Optic Optic { get; set; } = new Optic { Id = 1, Name = "OM10" };
+    public Optic? Optic { get; set; } 
     [Required]
-    public LampColor LampColor { get; set; } = new LampColor { Id = 1, Temperature = 2200 };
+    public LampColor? LampColor { get; set; }
   }
 }

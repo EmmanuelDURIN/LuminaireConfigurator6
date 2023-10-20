@@ -1,13 +1,12 @@
 ﻿@typeparam TItem
 @typeparam TValue
 @typeparam TDisplay
-
-<select class="form-control" @bind="SelectedValue">
+<select class="form-control" @bind="@SelectedValue">
     <option value="0">Please select one</option>
     @foreach (TItem item in Items)
     {
         var currentValue = ValueSelector(item);
-        bool isSelected = (currentValue?.Equals(SelectedValue)==true);
+        bool isSelected = (currentValue?.Equals(SelectedValue) == true);
         <option value="@currentValue" selected="@isSelected">@DisplaySelector(item)</option>
     }
 </select>

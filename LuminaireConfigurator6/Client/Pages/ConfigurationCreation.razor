@@ -16,7 +16,7 @@
             <CustomSelect Items="@Optics"
                           DisplaySelector="o=>o.Name.ToUpper()"
                           ValueSelector="o=>o.Id"
-                          Selected="@(() => Configuration.Optic)">
+                          @bind-Selected="@Configuration.Optic">
             </CustomSelect>
             <ValidationMessage For="@(()=> Configuration.Optic)" />
         </div>
@@ -28,7 +28,7 @@
             <CustomSelect Items="@LampColors"
                           DisplaySelector="l=>l.Temperature"
                           ValueSelector="l=>l.Id"
-                          Selected="@( () => Configuration.LampColor)">
+                          @bind-Selected="@Configuration.LampColor">
             </CustomSelect>
             <ValidationMessage For="@(()=> Configuration.LampColor)" />
         </div>

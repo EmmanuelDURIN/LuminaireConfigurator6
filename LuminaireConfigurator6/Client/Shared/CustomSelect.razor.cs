@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace LuminaireConfigurator6.Client.Shared
 {
@@ -9,39 +8,30 @@ namespace LuminaireConfigurator6.Client.Shared
                                       : ComponentBase
     {
         [CascadingParameter]
-        public EditContext? EditContext { get; set; }
-        public ValidationMessageStore? messageStore { get; set; }
-        private object? fieldHolder;
-        private string? fieldName;
-        private MemberExpression? memberInfo;
-        private Expression<Func<TItem>> selected = null!;
+        private EditContext? CascadedEditContext { get; set; }
+        protected internal FieldIdentifier FieldIdentifier { get; set; }
+        private TItem? selected;
         [Parameter, EditorRequired]
-        public Expression<Func<TItem>> Selected
+        public TItem? Selected
         {
             get => selected;
-            set
-            {
-                selected = value;
-                if (selected != null)
-                {
-                    memberInfo = GetMemberInfo(selected);
-                    fieldHolder = EditContext?.Model;
-                    fieldName = memberInfo.Member.Name;
-                }
-                else
-                {
-                    memberInfo = null;
-                    fieldHolder = null;
-                    fieldName = null;
-                }
-            }
+            set => selected = value;
         }
+        [Parameter] public EventCallback<TItem> SelectedChanged { get; set; }
+
+        private Expression<Func<TItem>>? selectedExpression { get; set; }
+        [Parameter]
+        public Expression<Func<TItem>>? SelectedExpression
+        {
+            get => selectedExpression;
+            set => selectedExpression = value;
+        }
+        [Parameter, EditorRequired]
+        public Func<TItem, TDisplay> DisplaySelector { get; set; } = null!;
         [Parameter, EditorRequired]
         public IEnumerable<TItem> Items { get; set; } = Enumerable.Empty<TItem>();
         [Parameter, EditorRequired]
         public Func<TItem, TValue> ValueSelector { get; set; } = null!;
-        [Parameter, EditorRequired]
-        public Func<TItem, TDisplay> DisplaySelector { get; set; } = null!;
         [Parameter]
         public EventCallback<TValue> SelectedValueChanged { get; set; }
         private TValue? selectedValue;
@@ -53,38 +43,29 @@ namespace LuminaireConfigurator6.Client.Shared
                 if (selectedValue?.Equals(value) == false)
                 {
                     selectedValue = value;
-                    SetModelProperty(value);
+                    selected = Items.FirstOrDefault(i => value?.Equals(ValueSelector(i)) == true);
                     SelectedValueChanged.InvokeAsync(value);
+                    SelectedChanged.InvokeAsync(selected);
+                    if (CascadedEditContext != null)
+                    {
+                        CascadedEditContext.NotifyFieldChanged(FieldIdentifier);
+                        CascadedEditContext?.NotifyValidationStateChanged();
+                    }
                 }
             }
         }
-        private void SetModelProperty(TValue? value)
+        private void OnValidateStateChanged(object? sender, ValidationStateChangedEventArgs eventArgs)
         {
-            if (fieldName != null && fieldHolder != null && ValueSelector != null)
-            {
-                var newItem = Items.FirstOrDefault(item => ValueSelector(item)?.Equals(value) == true);
-                var property = memberInfo?.Member as PropertyInfo;
-                if (property != null)
-                {
-                    property.SetValue(fieldHolder, newItem);
-                    // warn form that property has changed value so that validation can occur
-                    EditContext?.NotifyFieldChanged(new FieldIdentifier(fieldHolder, fieldName));
-                }
-            }
+            StateHasChanged();
         }
-        private static MemberExpression GetMemberInfo(Expression method)
+        public override Task SetParametersAsync(ParameterView parameters)
         {
-            LambdaExpression lambda = (LambdaExpression)method;
-            if (lambda.Body.NodeType == ExpressionType.Convert)
-                return (MemberExpression)((UnaryExpression)lambda.Body).Operand;
-            else if (lambda.Body.NodeType == ExpressionType.MemberAccess)
-                return (MemberExpression)lambda.Body;
-            throw new Exception("Not a MemberExpression");
-        }
-        protected override void OnInitialized()
-        {
-            if (EditContext != null)
-                messageStore = new ValidationMessageStore(EditContext);
+            parameters.SetParameterProperties(this);
+            if (SelectedExpression != null)
+                FieldIdentifier = FieldIdentifier.Create(SelectedExpression);
+            if (CascadedEditContext != null)
+                CascadedEditContext.OnValidationStateChanged += OnValidateStateChanged;
+            return base.SetParametersAsync(ParameterView.Empty);
         }
     }
 }
