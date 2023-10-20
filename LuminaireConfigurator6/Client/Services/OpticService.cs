@@ -37,11 +37,10 @@ namespace LuminaireConfigurator6.Client.Services
                 Name="OL11"
               },
             };
-    public async Task<List<Optic>> GetOptics()
+    public Task<List<Optic>> GetOptics()
     {
-      await Task.Delay(300);
-
-      return optics;
+      //await Task.Delay(300);
+      return Task.FromResult(optics);
     }
   }
 }

@@ -22,11 +22,10 @@ namespace LuminaireConfigurator6.Client.Services
                 Temperature=4700
               },
             };
-    public async Task<List<LampColor>> GetLampColors()
+    public Task<List<LampColor>> GetLampColors()
     {
-      await Task.Delay(300);
-
-      return lampColors;
+      //await Task.Delay(300);
+      return Task.FromResult(lampColors);
     }
   }
 }
